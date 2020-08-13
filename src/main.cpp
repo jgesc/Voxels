@@ -1,15 +1,15 @@
-#include "graphics/GraphicsManager.hpp"
-#include "world/Chunk.hpp"
+#include "Graphics/GraphicsManager.hpp"
+//#include "World/Chunk.hpp"
 
 int main(void)
 {
   GraphicsManager::initialize();
-  Chunk chunk;
+  //Chunk chunk;
 
-  chunk.initRender();
+  //chunk.initRender();
   while(!glfwWindowShouldClose(GraphicsManager::window))
   {
-    chunk.render();
+    //chunk.render();
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();
   }

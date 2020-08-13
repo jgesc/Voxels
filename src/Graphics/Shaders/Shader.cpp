@@ -13,7 +13,6 @@ Shader::Shader(GLenum type, string path)
   sourceFile.close();
   sourceString = sourceStream.str();
   source = sourceString.data();
-  delete sourceFile;
 
   // Store type and ID
   this->id = glCreateShader(type);

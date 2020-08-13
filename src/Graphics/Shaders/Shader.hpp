@@ -6,9 +6,8 @@
 #include <sstream>
 #include <iostream>
 #include <cstdio>
-#include "../ResourceManager.hpp"
-#include "../Debugging/OpenGLLogger.hpp"
-#include "../Debugging/Logger.hpp"
+#include "../../ResourceManager.hpp"
+#include "../../Debugging/Logger.hpp"
 
 using std::string;
 
@@ -22,7 +21,7 @@ public:
   Shader(GLenum type, string path);
   Shader(string path);
   // Destructors
-  Shader::~Shader()
+  ~Shader();
 
   // Getters
   inline GLuint getId() {return this->id;}
