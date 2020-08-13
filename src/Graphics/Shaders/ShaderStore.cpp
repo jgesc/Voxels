@@ -12,12 +12,14 @@ void ShaderStore::initialize()
   ShaderStore::I = new ShaderStore();
 }
 
-ShaderProgram makeShaderProgram(string vs, string fs)
+ShaderProgram makeShaderProgram(string vsname, string fsname)
 {
   // Create shaders
-  Shader defaultVShader = Shader(GL_VERTEX_SHADER, vs);
-  Shader defaultFShader = Shader(GL_FRAGMENT_SHADER, fs);
-  ShaderProgram sp(&defaultVShader, &defaultFShader);
+  string vspath = "shaders/" + vsname;
+  string fspath = "shaders/" + fsname;
+  Shader vs = Shader(GL_VERTEX_SHADER, vspath);
+  Shader fs = Shader(GL_FRAGMENT_SHADER, fspath);
+  ShaderProgram sp(&vs, &fs);
 
   return sp;
 }
@@ -25,5 +27,5 @@ ShaderProgram makeShaderProgram(string vs, string fs)
 ShaderStore::ShaderStore()
 {
   // Create shaders
-  
+  makeShaderProgram("default.vs", "default.fs");
 }
