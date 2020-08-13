@@ -3,5 +3,7 @@
 
 class Camera
 {
-
+private:
+  glm::vec3 pos;
+public:
 }

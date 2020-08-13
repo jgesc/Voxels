@@ -6,7 +6,7 @@ ifstream ResourceManager::getResourceStream(string path)
 {
   ifstream stream = ifstream("./Resources/" + path);
   if(stream.fail()) {
-    // TODO: File does not exist
+    LOG("Error opening resource: " + path);
     throw 0;
   }
   LOG("Loaded resource: " + path);
