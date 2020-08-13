@@ -27,5 +27,5 @@ ShaderProgram makeShaderProgram(string vsname, string fsname)
 ShaderStore::ShaderStore()
 {
   // Create shaders
-  makeShaderProgram("default.vs", "default.fs");
+  this->defaultShader = makeShaderProgram("default.vs", "default.fs");
 }

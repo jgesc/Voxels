@@ -9,5 +9,6 @@ ifstream ResourceManager::getResourceStream(string path)
     // TODO: File does not exist
     throw 0;
   }
+  LOG("Loaded resource: " + path);
   return stream;
 }

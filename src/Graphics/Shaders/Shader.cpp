@@ -27,16 +27,15 @@ Shader::Shader(GLenum type, string path)
   glGetShaderiv(this->id, GL_COMPILE_STATUS, &success);
   if(!success)
   {
-      glGetShaderInfoLog(this->id, 512, NULL, log);
-      cout << log << endl;
+    glGetShaderInfoLog(this->id, 512, NULL, log);
+    cout << log << endl;
 
-      throw 0; // TODO
+    throw 0; // TODO
   };
 }
 
 Shader::~Shader()
 {
-  LOG("Destroyed shader");
   glDeleteShader(this->id);
 }
 
@@ -49,11 +48,11 @@ GLenum detectShaderType(string path)
     switch(path[path.length() - 2])
     {
       case 'f':
-        //Shader(GL_FRAGMENT_SHADER, path);
-        return GL_FRAGMENT_SHADER;
+      //Shader(GL_FRAGMENT_SHADER, path);
+      return GL_FRAGMENT_SHADER;
       case 'v':
-        //Shader(GL_VERTEX_SHADER, path);
-        return GL_VERTEX_SHADER;
+      //Shader(GL_VERTEX_SHADER, path);
+      return GL_VERTEX_SHADER;
     }
   }
 

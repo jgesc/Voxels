@@ -11,6 +11,7 @@ main: $(OBJ_FILES)
 	g++ -o bin/main $^ $(INCLUDES)
 
 resources:
+	rm -rf bin/Resources
 	cp -r src/Resources bin/Resources
 
 clean:

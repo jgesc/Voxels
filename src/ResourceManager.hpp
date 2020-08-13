@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include "Debugging/Logger.hpp"
+
 class ResourceManager
 {
 public:
