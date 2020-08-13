@@ -8,5 +8,5 @@ uniform mat4 view;
 void main()
 {
   posColor = aPos;
-  gl_Position = view * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+  gl_Position = view * vec4(aPos.x, aPos.y, aPos.z, 1.0f);
 }

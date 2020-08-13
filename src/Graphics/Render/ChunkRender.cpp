@@ -84,7 +84,7 @@ void ChunkRender::updateVBO()
           // Front face
           vertex.insert(vertex.end(), {
             (float)x, (float)y, (float)z + 1,
-            (float)x + 1, (float)y + 1, (float)z+ 1,
+            (float)x + 1, (float)y + 1, (float)z + 1,
             (float)x + 1, (float)y, (float)z + 1,
             (float)x, (float)y, (float)z + 1,
             (float)x, (float)y + 1, (float)z + 1,

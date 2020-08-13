@@ -6,11 +6,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
+#include <random>
+
 int main(void)
 {
   GraphicsManager::initialize();
   Chunk chunk;
   chunk.setBlock(0, 0, 0, 1);
+  for(int i = 0; i < 16 * 16; i++)
+    chunk.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1);
   ChunkRender cr(&chunk);
 
   LOG("TEST");
@@ -20,6 +25,7 @@ int main(void)
   glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  0.0f);
   glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
   glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
+  glm::mat4 projection = glm::perspective(glm::radians((float)85.0), (float)800 / (float)600, 0.1f, 100.0f);
   view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
   while(!glfwWindowShouldClose(GraphicsManager::window))
@@ -39,7 +45,7 @@ int main(void)
       if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         cameraPos += cameraUp * cameraSpeed;
 
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     ShaderStore::I->defaultShader.setMat4("view", view);
 
     glClearColor(0.2, 0.6, 1.0, 1.0);

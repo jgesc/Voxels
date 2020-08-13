@@ -29,6 +29,7 @@ void GraphicsManager::initialize()
 
   // Set viewport
   glViewport(0, 0, 800, 600);
+  glEnable(GL_DEPTH_TEST);
 
   // Initialize shader store
   ShaderStore::initialize();
