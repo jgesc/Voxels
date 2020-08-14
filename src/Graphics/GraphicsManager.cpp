@@ -31,6 +31,10 @@ void GraphicsManager::initialize()
   glViewport(0, 0, 800, 600);
   glEnable(GL_DEPTH_TEST);
 
+  // Face culling
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_FRONT);
+
   // Initialize shader store
   ShaderStore::initialize();
 }
