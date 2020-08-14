@@ -1,6 +1,6 @@
 #include "Texture.hpp"
 
-Texture fromResource(std::string path)
+Texture Texture::fromResource(std::string path)
 {
   int width, height, nchannels;
   // Load resource
