@@ -16,7 +16,7 @@ public:
   // Setters
   void setId(uint32_t id) {this->id = id;}
   void setMetadata(uint32_t metadata) {this->metadata = metadata;}
-  void setEntblock(void * entBlock) {this->entblock = entblock;}
+  void setEntblock(void * entblock) {this->entblock = entblock;}
 
   // Getters
   inline uint32_t getId() {return this->id;}
