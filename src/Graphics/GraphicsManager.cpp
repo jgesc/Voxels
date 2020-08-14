@@ -37,6 +37,7 @@ void GraphicsManager::initialize()
 
   // Initialize shader store
   ShaderStore::initialize();
+  TextureStore::initialize();
 }
 
 void GraphicsManager::terminate()

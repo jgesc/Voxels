@@ -21,4 +21,7 @@ public:
   unsigned int getWidth() {return this->width;}
   unsigned int getHeight() {return this->height;}
   unsigned int getNchannels() {return this->nchannels;}
+
+  // Utils
+  const void bind() {glBindTexture(GL_TEXTURE_2D, this->id);}
 };

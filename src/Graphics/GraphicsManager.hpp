@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Shaders/ShaderStore.hpp"
+#include "Textures/TextureStore.hpp"
 
 class GraphicsManager
 {

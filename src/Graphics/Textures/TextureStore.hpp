@@ -15,5 +15,5 @@ public:
   static void initialize();
 
   // Textures
-  const Texture blockAtlas;
+  Texture blockAtlas;
 };

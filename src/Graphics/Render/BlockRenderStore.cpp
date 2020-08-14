@@ -4,18 +4,19 @@
 bool BlockRenderStore::initialized = false;
 BlockRenderStore * BlockRenderStore::I = NULL;
 
+BlockRenderStore::BlockRenderStore()
+{
+  // Register renders
+  renders[1] = new DefaultBlockRender(0, 1);
+  renders[2] = new DefaultBlockRender(1, 1);
+}
+
 void BlockRenderStore::initialize()
 {
   if(BlockRenderStore::initialized) return;
 
   BlockRenderStore::I = new BlockRenderStore();
   BlockRenderStore::initialized = true;
-}
-
-BlockRenderStore::BlockRenderStore()
-{
-  // Register renders
-  renders[1] = new DefaultBlockRender();
 }
 
 void BlockRenderStore::renderBlock(std::vector<float> * vertices, Chunk * chunk,

@@ -1,9 +1,11 @@
 #version 330 core
 
-in vec3 posColor;
+in vec2 texCoord;
 out vec4 FragColor;
+
+uniform sampler2D blockAtlas;
 
 void main()
 {
-    FragColor = vec4(mod(posColor, 1.0), 1.0);
+    FragColor = texture(blockAtlas, texCoord);
 }

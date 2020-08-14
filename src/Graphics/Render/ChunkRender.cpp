@@ -1,5 +1,6 @@
 #include "ChunkRender.hpp"
 #include "../Shaders/ShaderStore.hpp"
+#include "../Textures/TextureStore.hpp"
 #include "BlockRenderStore.hpp"
 
 ChunkRender::ChunkRender(Chunk * chunk) : chunk(chunk)
@@ -9,8 +10,10 @@ ChunkRender::ChunkRender(Chunk * chunk) : chunk(chunk)
   glBindVertexArray(this->VAO);
   glGenBuffers(1, &this->VBO);
   glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   // Set flag for initial render
   this->requiresUpdate = true;
@@ -48,6 +51,7 @@ void ChunkRender::render()
   if(this->shouldUpdateVBO()) this->updateVBO();
 
   // Render
+  TextureStore::getInstance()->blockAtlas.bind();
   glBindVertexArray(this->VAO);
   ShaderStore::I->defaultShader.use();
   glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
