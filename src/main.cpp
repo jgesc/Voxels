@@ -73,7 +73,7 @@ int main(void)
     movementVector = glm::normalize(movementVector) * cameraSpeed;
 
     cam.traslate(movementVector);
-    
+
     //view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
 

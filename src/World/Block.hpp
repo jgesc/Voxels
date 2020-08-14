@@ -3,6 +3,8 @@
 #include <bitset>
 #include <cstdint>
 
+#define MAX_BLOCK_ID 255
+
 class Block
 {
 private:

@@ -26,4 +26,6 @@ all:
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	g++ -c -o $@ $<
+	g++ -c -o $@ -MMD $<
+
+-include $(shell find $(OBJ_DIR) -name *.d)
