@@ -8,7 +8,7 @@ INCLUDES := -lglfw -ldl
 
 
 main: $(OBJ_FILES)
-	g++ -o bin/main $^ $(INCLUDES)
+	g++ -O3 -o bin/main $^ $(INCLUDES)
 
 resources:
 	rm -rf bin/Resources
@@ -26,6 +26,6 @@ all:
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	g++ -c -o $@ -MMD $<
+	g++ -O3 -c -o $@ -MMD $<
 
 -include $(shell find $(OBJ_DIR) -name *.d)

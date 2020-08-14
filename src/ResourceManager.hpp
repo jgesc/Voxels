@@ -1,8 +1,12 @@
 #pragma once
 
+#include <vector>
 #include <fstream>
 
 #include "Debugging/Logger.hpp"
+#include "Vendor/stb_image.h"
+
+#define RESOURCE_PATH "./Resources/"
 
 class ResourceManager
 {
