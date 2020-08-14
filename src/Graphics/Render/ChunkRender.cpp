@@ -1,5 +1,6 @@
 #include "ChunkRender.hpp"
 #include "../Shaders/ShaderStore.hpp"
+#include "BlockRenderStore.hpp"
 
 ChunkRender::ChunkRender(Chunk * chunk) : chunk(chunk)
 {
@@ -19,7 +20,6 @@ void ChunkRender::updateVBO()
 {
   // Generate vertices
   vector<float> vertex;
-  this->vertexCount = 0;
 
   for(int x = 0; x < 16; x++)
   {
@@ -27,70 +27,8 @@ void ChunkRender::updateVBO()
     {
       for(int z = 0; z < 16; z++)
       {
-        if(this->chunk->getBlock(x, y, z)->getId() != 0)
-        {
-          this->vertexCount += 36;
-
-          // Left face
-          vertex.insert(vertex.end(), {
-            (float)x, (float)y, (float)z,
-            (float)x, (float)y + 1, (float)z,
-            (float)x, (float)y, (float)z + 1,
-            (float)x, (float)y + 1, (float)z,
-            (float)x, (float)y + 1, (float)z + 1,
-            (float)x, (float)y, (float)z + 1
-          } );
-
-          // Right face
-          vertex.insert(vertex.end(), {
-            (float)x + 1, (float)y, (float)z,
-            (float)x + 1, (float)y, (float)z + 1,
-            (float)x + 1, (float)y + 1, (float)z,
-            (float)x + 1, (float)y + 1, (float)z,
-            (float)x + 1, (float)y, (float)z + 1,
-            (float)x + 1, (float)y + 1, (float)z + 1
-          } );
-
-          // Top face
-          vertex.insert(vertex.end(), {
-            (float)x, (float)y + 1, (float)z,
-            (float)x + 1, (float)y + 1, (float)z,
-            (float)x + 1, (float)y + 1, (float)z + 1,
-            (float)x, (float)y + 1, (float)z,
-            (float)x + 1, (float)y + 1, (float)z + 1,
-            (float)x, (float)y + 1, (float)z + 1
-          } );
-
-          // Bottom face
-          vertex.insert(vertex.end(), {
-            (float)x, (float)y, (float)z,
-            (float)x + 1, (float)y, (float)z + 1,
-            (float)x + 1, (float)y, (float)z,
-            (float)x, (float)y, (float)z,
-            (float)x, (float)y, (float)z + 1,
-            (float)x + 1, (float)y, (float)z + 1
-          } );
-
-          // Back face
-          vertex.insert(vertex.end(), {
-            (float)x, (float)y, (float)z,
-            (float)x + 1, (float)y, (float)z,
-            (float)x + 1, (float)y + 1, (float)z,
-            (float)x, (float)y, (float)z,
-            (float)x + 1, (float)y + 1, (float)z,
-            (float)x, (float)y + 1, (float)z
-          } );
-
-          // Front face
-          vertex.insert(vertex.end(), {
-            (float)x, (float)y, (float)z + 1,
-            (float)x + 1, (float)y + 1, (float)z + 1,
-            (float)x + 1, (float)y, (float)z + 1,
-            (float)x, (float)y, (float)z + 1,
-            (float)x, (float)y + 1, (float)z + 1,
-            (float)x + 1, (float)y + 1, (float)z + 1
-          } );
-        }
+        BlockRenderStore::renderBlock(&vertex, this->chunk, x, y, z,
+          this->chunk->getBlock(x, y, z)->getId());
       }
     }
   }
@@ -98,6 +36,7 @@ void ChunkRender::updateVBO()
   // Update buffer
   glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
   glBufferData(GL_ARRAY_BUFFER, vertex.size() * sizeof(float), vertex.data(), GL_STATIC_DRAW);
+  this->vertexCount = vertex.size() / 3;
 
   // Unset requiresUpdate flag
   this->requiresUpdate = false;

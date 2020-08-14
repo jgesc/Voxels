@@ -1,6 +1,6 @@
 #include "../BlockRender.hpp"
 
-class DefaultBlockRender : BlockRender
+class DefaultBlockRender : public BlockRender
 {
 public:
   void render(std::vector<float> * vertices, Chunk *chunk, uint_fast8_t lx,
