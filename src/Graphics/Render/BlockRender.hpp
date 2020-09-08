@@ -4,6 +4,8 @@
 
 #include "../../World/Chunk.hpp"
 
+#define BLOCK_ATLAST_SIZE 2
+
 class BlockRender
 {
 public:

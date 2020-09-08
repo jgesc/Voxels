@@ -1,7 +1,7 @@
+#pragma once
+
 #include "../BlockRender.hpp"
 #include "../../../Debugging/Logger.hpp"
-
-#define BLOCK_ATLAST_SIZE 2
 
 class DefaultBlockRender : public BlockRender
 {

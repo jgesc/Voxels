@@ -34,7 +34,7 @@ int main(void)
   Chunk chunk;
   chunk.setBlock(0, 0, 0, 1);
   for(int i = 0; i < 16 * 16; i++)
-    chunk.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 2);
+    chunk.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
   ChunkRender cr(&chunk);
 
 

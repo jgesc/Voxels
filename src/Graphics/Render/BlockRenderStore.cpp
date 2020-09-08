@@ -1,15 +1,19 @@
 #include "BlockRenderStore.hpp"
-#include "BlockRenders/DefaultBlockRender.hpp"
 
 bool BlockRenderStore::initialized = false;
 BlockRenderStore * BlockRenderStore::I = NULL;
+
+
 
 BlockRenderStore::BlockRenderStore()
 {
   // Register renders
   renders[1] = new DefaultBlockRender(0, 1);
   renders[2] = new DefaultBlockRender(1, 1);
+  renders[3] = new GrassBlockRender(1, 0, 0, 0, 1, 1);
 }
+
+
 
 void BlockRenderStore::initialize()
 {

@@ -5,6 +5,9 @@
 #include "../../World/Chunk.hpp"
 #include "BlockRender.hpp"
 
+#include "BlockRenders/DefaultBlockRender.hpp"
+#include "BlockRenders/GrassBlockRender.hpp"
+
 class BlockRenderStore
 {
 private:
