@@ -42,6 +42,8 @@ int main(void)
   Camera cam;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
+  cam.setPos(glm::vec3(4, 2, 5));
+
   // glm::mat4 view;
   // glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  0.0f);
   // glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);

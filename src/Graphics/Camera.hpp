@@ -34,7 +34,7 @@ public:
   inline float getYaw() {return this->yaw;}
 
   // Position
-  void setPos(glm::vec3 newPos) {pos = newPos;}
+  void setPos(glm::vec3 newPos) {pos = newPos; updateViewMatrix();}
   glm::vec3 getPos() {return this->pos;}
   void traslate(glm::vec3 deltaPos);
 
