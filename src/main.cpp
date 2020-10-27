@@ -3,6 +3,7 @@
 #include "World/Chunk.hpp"
 #include "Debugging/Logger.hpp"
 #include "Graphics/Camera.hpp"
+#include "Physics/Collision/Raycast.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
