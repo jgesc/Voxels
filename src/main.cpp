@@ -3,13 +3,19 @@
 #include "World/Chunk.hpp"
 #include "Debugging/Logger.hpp"
 #include "Graphics/Camera.hpp"
-#include "Physics/Collision/Raycast.hpp"
+#include "World/Physics/Collision/Raycast.hpp"
+#include "World/Physics/Collision/BlockCollision.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 #include <random>
+
+
+static BlockCollision aimBlock;
+static World world;
+static Camera cam;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -32,15 +38,16 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 int main(void)
 {
   GraphicsManager::initialize();
-  Chunk chunk;
-  chunk.setBlock(0, 0, 0, 1);
+  //Chunk chunk;
+  world.fetchChunk(0, 0, 0);
+  world.setBlock(0, 0, 0, 1);
   for(int i = 0; i < 16 * 16; i++)
-    chunk.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
-  ChunkRender cr(&chunk);
+    world.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
+  ChunkRender cr(world.getChunk(0, 0, 0));
 
 
   float cameraSpeed = 0.01f;
-  Camera cam;
+  //Camera cam;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
   cam.setPos(glm::vec3(4, 2, 5));
@@ -76,6 +83,14 @@ int main(void)
     movementVector = glm::normalize(movementVector) * cameraSpeed;
 
     cam.traslate(movementVector);
+
+    Raycast::intersectBlock(&world, cam.getPos(), cam.getFront(),
+      5.0, &aimBlock);
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
+    {
+      LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
+      aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
+    }
 
     //view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());

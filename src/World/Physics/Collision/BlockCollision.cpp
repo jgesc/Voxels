@@ -1,11 +1,12 @@
 #include "BlockCollision.hpp"
 
-void BlockCollision::set(Block * block, Chunk * chunk, Region * region,
-  LOCAL_CHUNK_COORD x, LOCAL_CHUNK_COORD y, LOCAL_CHUNK_COORD z)
+void BlockCollision::set(World * world, Block * block,
+  WORLD_COORD x, WORLD_COORD y, WORLD_COORD z)
 {
   this->block = block;
-  this->chunk = chunk;
-  this->region = region;
+  this->region = world->regionWithBlock(x, y, z);
+  this->chunk = this->region->chunkWithBlock(
+    x % BLOCKS_PER_REGION, y % BLOCKS_PER_REGION, z % BLOCKS_PER_REGION);
   this->x = x;
   this->y = y;
   this->z = z;
