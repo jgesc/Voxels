@@ -11,6 +11,9 @@ void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
 {
     // 3D Bresenham implementation
     // TODO: replace World::getBlock() call with something more efficient
+    // TODO: replace int
+
+    out->reset();
 
     int x1 = from.x;
     int y1 = from.y;
@@ -50,12 +53,13 @@ void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
       for (;;)
       {
         Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock)
-          LOG("HIT");
-        if (x == x2)
+        if(hitBlock && hitBlock->getId() != 0)
         {
+          out->set(world, hitBlock, x, y, z);
           return;
         }
+
+        if (x == x2) return;
 
         if (yd >= 0)
         {
@@ -81,12 +85,13 @@ void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
       for (;;)
       {
         Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock)
-          LOG("HIT");
-        if (y == y2)
+        if(hitBlock && hitBlock->getId() != 0)
         {
+          out->set(world, hitBlock, x, y, z);
           return;
         }
+
+        if (y == y2) return;
 
         if (xd >= 0)
         {
@@ -112,12 +117,13 @@ void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
       for (;;)
       {
         Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock)
-          LOG("HIT");
-        if (z == z2)
+        if(hitBlock && hitBlock->getId() != 0)
         {
+          out->set(world, hitBlock, x, y, z);
           return;
         }
+
+        if (z == z2) return;
 
         if (xd >= 0)
         {
