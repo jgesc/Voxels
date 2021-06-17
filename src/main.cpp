@@ -90,6 +90,7 @@ int main(void)
     {
       LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
       aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
+      cr.updateVBO();
     }
 
     //view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

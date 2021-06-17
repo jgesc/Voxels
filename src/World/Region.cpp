@@ -10,7 +10,10 @@ Chunk * Region::chunkWithBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL
 Block * Region::getBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z)
 {
   Chunk * chunk = this->chunkWithBlock(x, y, z);
-  return chunk->getBlock(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+  if(chunk)
+    return chunk->getBlock(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+  else
+    return NULL;
 }
 
 void Region::setBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z, uint32_t id)
