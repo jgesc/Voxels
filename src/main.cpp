@@ -1,5 +1,6 @@
 #include "Graphics/GraphicsManager.hpp"
 #include "Graphics/Render/ChunkRender.hpp"
+#include "Graphics/RenderManager.hpp"
 #include "World/Chunk.hpp"
 #include "Debugging/Logger.hpp"
 #include "Graphics/Camera.hpp"
@@ -43,8 +44,8 @@ int main(void)
   world.setBlock(0, 0, 0, 1);
   for(int i = 0; i < 16 * 16; i++)
     world.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
-  ChunkRender cr(world.getChunk(0, 0, 0));
-
+  //ChunkRender cr(world.getChunk(0, 0, 0));
+  RenderManager::registerChunk(world.getChunk(0, 0, 0));
 
   float cameraSpeed = 0.01f;
   //Camera cam;
@@ -89,7 +90,7 @@ int main(void)
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cr.render();
+    RenderManager::renderChunksWithCamera(NULL);
 
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();
