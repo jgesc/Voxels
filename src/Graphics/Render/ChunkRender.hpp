@@ -14,6 +14,7 @@ private:
   GLuint VBO, VAO;
   GLuint vertexCount;
   bool requiresUpdate;
+  uint64_t lastUpdate;
 
 public:
   // Constructors

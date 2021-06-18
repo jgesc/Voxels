@@ -52,13 +52,6 @@ int main(void)
     (float)800 / (float)600, 0.1f, 100.0f));
   cam.setPos(glm::vec3(4, 2, 5));
 
-  // glm::mat4 view;
-  // glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  0.0f);
-  // glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-  // glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
-  // glm::mat4 projection = glm::perspective(glm::radians((float)85.0), (float)800 / (float)600, 0.1f, 100.0f);
-  // view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
 
@@ -90,15 +83,14 @@ int main(void)
     {
       LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
       aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
-      cr.updateVBO();
     }
 
-    //view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cr.render();
+
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();
   }

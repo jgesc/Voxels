@@ -43,10 +43,14 @@ void ChunkRender::updateVBO()
 
   // Unset requiresUpdate flag
   this->requiresUpdate = false;
+  this->lastUpdate = this->chunk->getLastUpdate();
 }
 
 void ChunkRender::render()
 {
+  // Check if chunk has been updated
+  this->requiresUpdate = this->lastUpdate != this->chunk->getLastUpdate();
+
   // Check if VBO update is required
   if(this->shouldUpdateVBO()) this->updateVBO();
 
