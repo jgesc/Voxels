@@ -43,16 +43,22 @@ void ChunkRender::updateVBO()
 
   // Unset requiresUpdate flag
   this->requiresUpdate = false;
+  this->lastUpdate = this->chunk->getLastUpdate();
 }
 
 void ChunkRender::render()
 {
+  // Check if chunk has been updated
+  this->requiresUpdate = this->lastUpdate != this->chunk->getLastUpdate();
+
   // Check if VBO update is required
   if(this->shouldUpdateVBO()) this->updateVBO();
 
   // Render
   TextureStore::getInstance()->blockAtlas.bind();
   glBindVertexArray(this->VAO);
-  ShaderStore::I->defaultShader.use();
+  ShaderStore::I->chunkShader.use();
+  ShaderStore::I->chunkShader.setVec3f("chunkpos", this->chunk->getX(),
+    this->chunk->getY(), this->chunk->getZ());
   glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
 }

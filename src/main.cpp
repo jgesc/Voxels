@@ -1,14 +1,22 @@
 #include "Graphics/GraphicsManager.hpp"
 #include "Graphics/Render/ChunkRender.hpp"
+#include "Graphics/RenderManager.hpp"
 #include "World/Chunk.hpp"
 #include "Debugging/Logger.hpp"
 #include "Graphics/Camera.hpp"
+#include "World/Physics/Collision/Raycast.hpp"
+#include "World/Physics/Collision/BlockCollision.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 #include <random>
+
+
+static BlockCollision aimBlock;
+static World world;
+static Camera cam;
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -31,25 +39,30 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 int main(void)
 {
   GraphicsManager::initialize();
-  Chunk chunk;
-  chunk.setBlock(0, 0, 0, 1);
-  for(int i = 0; i < 16 * 16; i++)
-    chunk.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
-  ChunkRender cr(&chunk);
+  //Chunk chunk;
+  //world.fetchChunk(0, 0, 0);
+  for(int x = 0; x < 4; x++)
+  {
+    for(int y = 0; y < 4; y++)
+    {
+      for(int z = 0; z < 4; z++)
+      {
+        world.fetchChunk(x, y, z);
+        RenderManager::registerChunk(world.getChunk(x, y, z));
+      }
+    }
+  }
 
-
+  world.setBlock(0, 0, 0, 1);
+  for(int i = 0; i < 64 * 64; i++)
+    world.setBlock(std::rand() % 64, std::rand() % 64, std::rand() % 64, 1 + std::rand() % 3);
+  //ChunkRender cr(world.getChunk(0, 0, 0));
+  // RenderManager::registerChunk(world.getChunk(0, 0, 0));
   float cameraSpeed = 0.01f;
-  Camera cam;
+  //Camera cam;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
   cam.setPos(glm::vec3(4, 2, 5));
-
-  // glm::mat4 view;
-  // glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  0.0f);
-  // glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-  // glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
-  // glm::mat4 projection = glm::perspective(glm::radians((float)85.0), (float)800 / (float)600, 0.1f, 100.0f);
-  // view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
@@ -76,12 +89,22 @@ int main(void)
 
     cam.traslate(movementVector);
 
-    //view = projection * glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
+    Raycast::intersectBlock(&world, cam.getPos(), cam.getFront(),
+      5.0, &aimBlock);
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
+    {
+      LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
+      aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
+    }
+
+    // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
+    ShaderStore::I->chunkShader.setMat4("view", cam.getViewMatrix());
+
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cr.render();
+    RenderManager::renderChunksWithCamera(NULL);
+
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();
   }

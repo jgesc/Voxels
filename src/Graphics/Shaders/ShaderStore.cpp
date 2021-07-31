@@ -28,4 +28,5 @@ ShaderStore::ShaderStore()
 {
   // Create shaders
   this->defaultShader = makeShaderProgram("default.vs", "default.fs");
+  this->chunkShader = makeShaderProgram("chunk.vs", "default.fs");
 }
