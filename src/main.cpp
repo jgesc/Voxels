@@ -40,13 +40,24 @@ int main(void)
 {
   GraphicsManager::initialize();
   //Chunk chunk;
-  world.fetchChunk(0, 0, 0);
-  world.setBlock(0, 0, 0, 1);
-  for(int i = 0; i < 16 * 16; i++)
-    world.setBlock(std::rand() % 16, std::rand() % 16, std::rand() % 16, 1 + std::rand() % 3);
-  //ChunkRender cr(world.getChunk(0, 0, 0));
-  RenderManager::registerChunk(world.getChunk(0, 0, 0));
+  //world.fetchChunk(0, 0, 0);
+  for(int x = 0; x < 4; x++)
+  {
+    for(int y = 0; y < 4; y++)
+    {
+      for(int z = 0; z < 4; z++)
+      {
+        world.fetchChunk(x, y, z);
+        RenderManager::registerChunk(world.getChunk(x, y, z));
+      }
+    }
+  }
 
+  world.setBlock(0, 0, 0, 1);
+  for(int i = 0; i < 64 * 64; i++)
+    world.setBlock(std::rand() % 64, std::rand() % 64, std::rand() % 64, 1 + std::rand() % 3);
+  //ChunkRender cr(world.getChunk(0, 0, 0));
+  // RenderManager::registerChunk(world.getChunk(0, 0, 0));
   float cameraSpeed = 0.01f;
   //Camera cam;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
@@ -86,7 +97,9 @@ int main(void)
       aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
     }
 
-    ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
+    // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
+    ShaderStore::I->chunkShader.setMat4("view", cam.getViewMatrix());
+
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

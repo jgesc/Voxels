@@ -57,6 +57,8 @@ void ChunkRender::render()
   // Render
   TextureStore::getInstance()->blockAtlas.bind();
   glBindVertexArray(this->VAO);
-  ShaderStore::I->defaultShader.use();
+  ShaderStore::I->chunkShader.use();
+  ShaderStore::I->chunkShader.setVec3f("chunkpos", this->chunk->getX(),
+    this->chunk->getY(), this->chunk->getZ());
   glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
 }

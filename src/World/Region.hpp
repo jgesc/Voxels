@@ -17,6 +17,7 @@ public:
 
   // Chunk manipulation
   Chunk * chunkWithBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
+  Chunk * getChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
   void createEmptyChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
 
   // Block manipulation
