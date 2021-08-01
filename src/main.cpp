@@ -94,7 +94,7 @@ int main(void)
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
       LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
-      aimBlock.getChunk()->setBlock(aimBlock.getX(), aimBlock.getY(), aimBlock.getZ(), 0);
+      aimBlock.getChunk()->setBlock(aimBlock.getX() % CHUNK_SIZE, aimBlock.getY() % CHUNK_SIZE, aimBlock.getZ() % CHUNK_SIZE, 0);
     }
 
     // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
