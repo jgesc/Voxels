@@ -8,6 +8,7 @@ public:
   // Shader list BEGIN
   ShaderProgram defaultShader;
   ShaderProgram chunkShader;
+  ShaderProgram userInterface;
   // Shader list END
 
   static ShaderStore * I;

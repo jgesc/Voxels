@@ -10,7 +10,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
 #include <random>
 
 
@@ -38,7 +37,29 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 int main(void)
 {
+
+
   GraphicsManager::initialize();
+
+
+  // UI tests
+  float vertices[] = {
+    0.0f,  0.01f, 0.0f,
+    0.01f, -0.01f, 0.0f,
+    -0.01f, -0.01f, 0.0f
+  };
+  unsigned int VBO;
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  unsigned int VAO;
+  glGenVertexArrays(1, &VAO);
+  glBindVertexArray(VAO);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  // END UI tests
+
+
   //Chunk chunk;
   //world.fetchChunk(0, 0, 0);
   for(int x = 0; x < 4; x++)
@@ -98,12 +119,22 @@ int main(void)
     }
 
     // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
+    ShaderStore::I->chunkShader.use();
     ShaderStore::I->chunkShader.setMat4("view", cam.getViewMatrix());
 
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderManager::renderChunksWithCamera(NULL);
+    RenderManager::renderChunksWithCamera(NULL); // TODO: use camera
+
+    // UI tests
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+    ShaderStore::I->userInterface.use();
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDisable(GL_BLEND);
+    // END UI tests
 
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();
