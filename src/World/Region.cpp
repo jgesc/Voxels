@@ -32,5 +32,6 @@ Chunk * Region::getChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGIO
 void Region::createEmptyChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z)
 {
   //LOG("Region::createEmptyChunk(" << (uint32_t)x << ", " << (uint32_t)y << ", " << (uint32_t)z << ")");
-  this->chunks[x][y][z] = new Chunk(x * REGION_SIZE, y * REGION_SIZE, z * REGION_SIZE);
+  this->chunks[x][y][z] = new Chunk(x + this->x * REGION_SIZE,
+      y + this->y * REGION_SIZE, z + this->z * REGION_SIZE);
 }

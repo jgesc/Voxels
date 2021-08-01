@@ -14,10 +14,11 @@ public:
 
   // Region manipulation
   Region * regionWithBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z);
+  Region * regionWithChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z);
 
   // Chunk manipulation
-  Chunk * getChunk(uint64_t x, uint64_t y, uint64_t z);
-  void fetchChunk(uint64_t x, uint64_t y, uint64_t z);
+  Chunk * getChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z);
+  void fetchChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z);
 
   // Block manipulation
   Block * getBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z);

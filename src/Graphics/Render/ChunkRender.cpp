@@ -58,7 +58,10 @@ void ChunkRender::render()
   TextureStore::getInstance()->blockAtlas.bind();
   glBindVertexArray(this->VAO);
   ShaderStore::I->chunkShader.use();
-  ShaderStore::I->chunkShader.setVec3f("chunkpos", this->chunk->getX(),
-    this->chunk->getY(), this->chunk->getZ());
+  ShaderStore::I->chunkShader.setVec3f("chunkpos",
+    this->chunk->getX() * CHUNK_SIZE,
+    this->chunk->getY() * CHUNK_SIZE,
+    this->chunk->getZ() * CHUNK_SIZE);
+  // TODO: Use world coordinates (see Chunk.hpp)
   glDrawArrays(GL_TRIANGLES, 0, this->vertexCount);
 }

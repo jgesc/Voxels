@@ -2,20 +2,26 @@
 
 #include "Chunk.hpp"
 
+// Size in chunks
 #define REGION_SIZE 16
+// Size in blocks
 #define BLOCKS_PER_REGION (REGION_SIZE * CHUNK_SIZE)
+// Local chunk coordinates
 #define LOCAL_REGION_COORD uint_fast8_t
+// Region coordinates
+#define REGION_COORD uint64_t
 
 class Region
 {
 private:
   Chunk * chunks[REGION_SIZE][REGION_SIZE][REGION_SIZE];
-  uint64_t x, y, z;
+  REGION_COORD x, y, z;
 public:
-  Region(uint64_t x, uint64_t y, uint64_t z) : x(x), y(y), z(z),
+  Region(REGION_COORD x, REGION_COORD y, REGION_COORD z) : x(x), y(y), z(z),
     chunks{} {};
 
   // Chunk manipulation
+  // TODO: distinguish between local chunk and block coordinates
   Chunk * chunkWithBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
   Chunk * getChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
   void createEmptyChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
