@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 #include <glm/glm.hpp>
 
 #include "../../Block.hpp"

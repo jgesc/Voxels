@@ -3,7 +3,7 @@
 #include <forward_list>
 #include "Region.hpp"
 
-#define WORLD_COORD uint64_t
+#define WORLD_COORD int64_t
 
 class World
 {

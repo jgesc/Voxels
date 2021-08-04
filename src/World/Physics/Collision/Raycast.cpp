@@ -1,145 +1,78 @@
 #include "Raycast.hpp"
-#include "../../../Debugging/Logger.hpp"
 
-#define MAX(a,b) (((a)>(b))?(a):(b))
-#define ABS(a) (((a)<0) ? -(a) : (a))
-#define ZSGN(a) (((a)<0) ? -1 : (a)>0 ? 1 : 0)
-
+float intbound(float s, float ds) {
+  // Find the smallest positive t such that s+t*ds is an integer.
+  // TODO: may be possible to make it more efficient?
+  float r = round(s) - s;
+  if(signbit(ds) == signbit(r)) return r / ds; // Does not work when r == 0.0
+  else return (r < 0.0 ? r+1 : r-1) / ds;
+}
 
 void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
   float range, BlockCollision * out)
 {
-    // 3D Bresenham implementation
-    // TODO: replace World::getBlock() call with something more efficient
-    // TODO: replace int
+  out->reset();
 
-    out->reset();
+  // Cube containing origin point.
+  int64_t x = floor(from.x);
+  int64_t y = floor(from.y);
+  int64_t z = floor(from.z);
+  // Break out direction vector.
+  float dx = towards.x;
+  float dy = towards.y;
+  float dz = towards.z;
+  if (dx == 0 && dy == 0 && dz == 0)
+    return;
+  // Direction to increment x,y,z when stepping.
+  int_fast8_t stepX = dx > 0 ? 1 : dx < 0 ? -1 : 0;
+  int_fast8_t stepY = dy > 0 ? 1 : dy < 0 ? -1 : 0;
+  int_fast8_t stepZ = dz > 0 ? 1 : dz < 0 ? -1 : 0;
+  // See description above. The initial values depend on the fractional
+  // part of the origin.
+  float tMaxX = intbound(from.x, dx);
+  float tMaxY = intbound(from.y, dy);
+  float tMaxZ = intbound(from.z, dz);
+  // The change in t when taking a step (always positive).
+  float tDeltaX = dx != 0 ? stepX/dx : 0;
+  float tDeltaY = dy != 0 ? stepY/dy : 0;
+  float tDeltaZ = dz != 0 ? stepZ/dz : 0;
 
-    int x1 = from.x;
-    int y1 = from.y;
-    int z1 = from.z;
-
-    glm::vec3 dest = from + towards * range;
-    int x2 = dest.x;
-    int y2 = dest.y;
-    int z2 = dest.z;
-
-    int xd, yd, zd;
-    int x, y, z;
-    int ax, ay, az;
-    int sx, sy, sz;
-    int dx, dy, dz;
-
-    dx = x2 - x1;
-    dy = y2 - y1;
-    dz = z2 - z1;
-
-    ax = ABS(dx) << 1;
-    ay = ABS(dy) << 1;
-    az = ABS(dz) << 1;
-
-    sx = ZSGN(dx);
-    sy = ZSGN(dy);
-    sz = ZSGN(dz);
-
-    x = x1;
-    y = y1;
-    z = z1;
-
-    if (ax >= MAX(ay, az))            /* x dominant */
+  while (true) {
+    Block * hitBlock = world->getBlock(x, y, z);
+    if(hitBlock && hitBlock->getId() != 0)
     {
-      yd = ay - (ax >> 1);
-      zd = az - (ax >> 1);
-      for (;;)
-      {
-        Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock && hitBlock->getId() != 0)
-        {
-          out->set(world, hitBlock, x, y, z);
-          return;
-        }
+      out->set(world, hitBlock, x, y, z);
+      return;
+    }
 
-        if (x == x2) return;
-
-        if (yd >= 0)
-        {
-          y += sy;
-          yd -= ax;
-        }
-
-        if (zd >= 0)
-        {
-          z += sz;
-          zd -= ax;
-        }
-
-        x += sx;
-        yd += ay;
-        zd += az;
+    // tMaxX stores the t-value at which we cross a cube boundary along the
+    // X axis, and similarly for Y and Z. Therefore, choosing the least tMax
+    // chooses the closest cube boundary. Only the first case of the four
+    // has been commented in detail.
+    if (tMaxX < tMaxY) {
+      if (tMaxX < tMaxZ) {
+        if (tMaxX > range) return;
+        // Update which cube we are now in.
+        x += stepX;
+        // Adjust tMaxX to the next X-oriented boundary crossing.
+        tMaxX += tDeltaX;
+      } else {
+        if (tMaxZ > range) return;
+        z += stepZ;
+        tMaxZ += tDeltaZ;
+      }
+    } else {
+      if (tMaxY < tMaxZ) {
+        if (tMaxY > range) return;
+        y += stepY;
+        tMaxY += tDeltaY;
+      } else {
+        // Identical to the second case, repeated for simplicity in
+        // the conditionals.
+        if (tMaxZ > range) return;
+        z += stepZ;
+        tMaxZ += tDeltaZ;
       }
     }
-    else if (ay >= MAX(ax, az))            /* y dominant */
-    {
-      xd = ax - (ay >> 1);
-      zd = az - (ay >> 1);
-      for (;;)
-      {
-        Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock && hitBlock->getId() != 0)
-        {
-          out->set(world, hitBlock, x, y, z);
-          return;
-        }
-
-        if (y == y2) return;
-
-        if (xd >= 0)
-        {
-          x += sx;
-          xd -= ay;
-        }
-
-        if (zd >= 0)
-        {
-          z += sz;
-          zd -= ay;
-        }
-
-        y += sy;
-        xd += ax;
-        zd += az;
-      }
-    }
-    else if (az >= MAX(ax, ay))            /* z dominant */
-    {
-      xd = ax - (az >> 1);
-      yd = ay - (az >> 1);
-      for (;;)
-      {
-        Block * hitBlock = world->getBlock(x, y, z);
-        if(hitBlock && hitBlock->getId() != 0)
-        {
-          out->set(world, hitBlock, x, y, z);
-          return;
-        }
-
-        if (z == z2) return;
-
-        if (xd >= 0)
-        {
-          x += sx;
-          xd -= az;
-        }
-
-        if (yd >= 0)
-        {
-          y += sy;
-          yd -= az;
-        }
-
-        z += sz;
-        xd += ax;
-        yd += ay;
-      }
-    }
+  }
 }

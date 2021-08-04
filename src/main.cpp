@@ -10,7 +10,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
 #include <random>
 
 
@@ -38,7 +37,16 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 int main(void)
 {
+
+
   GraphicsManager::initialize();
+
+
+  // UI tests
+
+  // END UI tests
+
+
   //Chunk chunk;
   //world.fetchChunk(0, 0, 0);
   for(int x = 0; x < 4; x++)
@@ -98,12 +106,13 @@ int main(void)
     }
 
     // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
-    ShaderStore::I->chunkShader.setMat4("view", cam.getViewMatrix());
+
 
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderManager::renderChunksWithCamera(NULL);
+    RenderManager::renderChunksWithCamera(&cam); // TODO: use camera
+    RenderManager::renderInterface();
 
     glfwSwapBuffers(GraphicsManager::window);
     glfwPollEvents();

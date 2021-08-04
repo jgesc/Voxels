@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Interface/InterfaceRender.hpp"
 #include "Render/ChunkRender.hpp"
 #include "Camera.hpp"
 #include "../World/Chunk.hpp"
@@ -18,4 +19,5 @@ public:
 
   // Rendering utils
   static void renderChunksWithCamera(Camera * camera);
+  static void renderInterface();
 };
