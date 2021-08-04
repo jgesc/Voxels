@@ -106,13 +106,12 @@ int main(void)
     }
 
     // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
-    ShaderStore::I->chunkShader.use();
-    ShaderStore::I->chunkShader.setMat4("view", cam.getViewMatrix());
+
 
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderManager::renderChunksWithCamera(NULL); // TODO: use camera
+    RenderManager::renderChunksWithCamera(&cam); // TODO: use camera
     RenderManager::renderInterface();
 
     glfwSwapBuffers(GraphicsManager::window);

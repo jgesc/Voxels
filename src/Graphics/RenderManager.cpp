@@ -12,9 +12,10 @@ void RenderManager::registerChunk(Chunk * chunk)
 
 void RenderManager::renderChunksWithCamera(Camera * camera)
 {
-  // TODO: Enable camera
-
-  // TODO: Remember to set uniform
+  // Set chunk shader
+  ShaderStore::I->chunkShader.use();
+  // Get camera view matrix
+  ShaderStore::I->chunkShader.setMat4("view", camera->getViewMatrix());
 
   // Call 'render()' method for all registered chunk renders
   for (std::forward_list<ChunkRender>::iterator cr = RenderManager::chunkRenders.begin();
