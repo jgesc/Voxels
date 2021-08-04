@@ -7,7 +7,7 @@
 // Local block coordinates
 #define LOCAL_CHUNK_COORD uint_fast8_t
 // Chunk coordinates
-#define CHUNK_COORD uint64_t
+#define CHUNK_COORD int64_t
 
 class Chunk
 {

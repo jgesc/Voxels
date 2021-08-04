@@ -9,7 +9,7 @@
 // Local chunk coordinates
 #define LOCAL_REGION_COORD uint_fast8_t
 // Region coordinates
-#define REGION_COORD uint64_t
+#define REGION_COORD int64_t
 
 class Region
 {
