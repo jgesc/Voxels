@@ -99,7 +99,6 @@ int main(void)
       5.0, &aimBlock);
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
-      LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
       aimBlock.getChunk()->setBlock(aimBlock.getX() % CHUNK_SIZE, aimBlock.getY() % CHUNK_SIZE, aimBlock.getZ() % CHUNK_SIZE, 0);
     }
 
