@@ -49,7 +49,7 @@ void ChunkRender::updateVBO()
 void ChunkRender::render()
 {
   // Check if chunk has been updated
-  this->requiresUpdate = this->lastUpdate != this->chunk->getLastUpdate();
+  this->requiresUpdate |= this->lastUpdate != this->chunk->getLastUpdate();
 
   // Check if VBO update is required
   if(this->shouldUpdateVBO()) this->updateVBO();
