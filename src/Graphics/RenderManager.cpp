@@ -22,3 +22,8 @@ void RenderManager::renderChunksWithCamera(Camera * camera)
       cr->render();
   }
 }
+
+void RenderManager::renderInterface()
+{
+  InterfaceRender::renderInterface();
+}

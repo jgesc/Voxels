@@ -1,7 +1,9 @@
 #version 440 core
-layout (location = 0) in vec3 aPos;
+layout (location = 0) in vec2 aPos;
+
+uniform float depth; // View matrix (used for camera)
 
 void main()
 {
-  gl_Position = vec4(aPos, 1.0f);
+  gl_Position = vec4(aPos, depth, 1.0f);
 }
