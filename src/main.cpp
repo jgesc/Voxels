@@ -37,18 +37,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 int main(void)
 {
-
+  /// Initialization
 
   GraphicsManager::initialize();
 
+  /// World generation
 
-  // UI tests
-
-  // END UI tests
-
-
-  //Chunk chunk;
-  //world.fetchChunk(0, 0, 0);
   for(int x = 0; x < 4; x++)
   {
     for(int y = 0; y < 4; y++)
@@ -64,19 +58,23 @@ int main(void)
   world.setBlock(0, 0, 0, 1);
   for(int i = 0; i < 64 * 64; i++)
     world.setBlock(std::rand() % 64, std::rand() % 64, std::rand() % 64, 1 + std::rand() % 3);
-  //ChunkRender cr(world.getChunk(0, 0, 0));
-  // RenderManager::registerChunk(world.getChunk(0, 0, 0));
+
+  /// Camera setup
+
   float cameraSpeed = 0.01f;
-  //Camera cam;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
   cam.setPos(glm::vec3(4, 2, 5));
 
+
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
 
+  /// Main loop
+
   while(!glfwWindowShouldClose(GraphicsManager::window))
   {
+    /// Controls
     glm::vec3 movementVector(0, 0, 0);
 
     GLFWwindow *window = GraphicsManager::window;
@@ -101,13 +99,10 @@ int main(void)
       5.0, &aimBlock);
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
-      LOG("Removing at"); LOG(aimBlock.getX()); LOG(aimBlock.getY()); LOG(aimBlock.getZ());
       aimBlock.getChunk()->setBlock(aimBlock.getX() % CHUNK_SIZE, aimBlock.getY() % CHUNK_SIZE, aimBlock.getZ() % CHUNK_SIZE, 0);
     }
 
-    // ShaderStore::I->defaultShader.setMat4("view", cam.getViewMatrix());
-
-
+    /// Render
 
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -118,6 +113,7 @@ int main(void)
     glfwPollEvents();
   }
 
+  /// Cleanup
 
   GraphicsManager::terminate();
   return 0;

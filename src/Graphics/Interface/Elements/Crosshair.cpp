@@ -3,9 +3,10 @@
 Crosshair::Crosshair()
 {
   float vertices[] = {
-    0.0f,  0.02f, 0.0f,
-    0.02f, -0.02f, 0.0f,
-    -0.02f, -0.02f, 0.0f
+     0.0f / 800,   20.0f / 600,
+     0.0f / 800,  -20.0f / 600,
+     20.0f / 800,   0.0f / 600,
+    -20.0f / 800,   0.0f / 600
   };
 
   glGenBuffers(1, &this->VBO);
@@ -14,7 +15,7 @@ Crosshair::Crosshair()
   unsigned int VAO;
   glGenVertexArrays(1, &(this->VAO));
   glBindVertexArray(this->VAO);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 }
 
@@ -26,6 +27,7 @@ void Crosshair::render()
   glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
   ShaderStore::I->userInterface.use();
   glBindVertexArray(this->VAO);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glLineWidth(4.0);
+  glDrawArrays(GL_LINES, 0, 4);
   glDisable(GL_BLEND);
 }
