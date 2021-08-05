@@ -1,5 +1,5 @@
 set -e
 make resources
-make -j4
+make -j$(nproc)
 cd bin
 ./main

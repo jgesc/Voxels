@@ -26,7 +26,8 @@ Region * World::getRegionWithChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z)
   REGION_COORD regionX = SIGDIV(x, REGION_SIZE);
   REGION_COORD regionY = SIGDIV(y, REGION_SIZE);
   REGION_COORD regionZ = SIGDIV(z, REGION_SIZE);
-  LOG("World::regionWithChunk(" << x << ", " << y << ", " << z << ") = (" << regionX << ", " << regionY << ", " << regionZ << ")");
+
+  // LOG("World::regionWithChunk(" << x << ", " << y << ", " << z << ") = (" << regionX << ", " << regionY << ", " << regionZ << ")");
 
   return getRegion(regionX, regionY, regionZ);
 }
@@ -64,6 +65,7 @@ void World::setBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z, uint32_t id)
 
 Chunk * World::getChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z)
 {
+  // LOG("World::getChunk(" << x << ", " << y << ", " << z<< ")");
   Region * region = this->getRegionWithChunk(x, y, z);
   if(region != NULL)
     return region->getChunk(SIGMOD(x, REGION_SIZE), SIGMOD(y, REGION_SIZE),
@@ -82,18 +84,22 @@ void World::fetchChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z)
     // If not, load region
     region = &this->regions.emplace_front(SIGDIV(x, REGION_SIZE),
       SIGDIV(y, REGION_SIZE), SIGDIV(z, REGION_SIZE));
-    LOG("Creating region " << SIGDIV(x, REGION_SIZE) << " " <<
-      SIGDIV(y, REGION_SIZE) << " " << SIGDIV(z, REGION_SIZE));
   }
+
+  // Convert to local region coordinates
+  REGION_CHUNK_COORD localX = World::coordWorldToRegionChunk(x);
+  REGION_CHUNK_COORD localY = World::coordWorldToRegionChunk(y);
+  REGION_CHUNK_COORD localZ = World::coordWorldToRegionChunk(z);
+
   // Check if chunk is loaded in region
-  if(!region->getChunk(x, y, z))
+  if(!region->getChunk(localX, localY, localZ))
   {
     // If not, check if chunk exists in storage
       // If not, generate chunk
     // Else load from storage
     // TODO: for now just generate empty chunk
-    region->createEmptyChunk(x, y, z);
-    this->generator.generateChunk(region->getChunk(x, y, z));
+    region->createEmptyChunk(localX, localY, localZ);
+    this->generator.generateChunk(region->getChunk(localX, localY, localZ));
   }
   // Else exit
 }
@@ -101,4 +107,9 @@ void World::fetchChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z)
 REGION_BLOCK_COORD World::coordWorldToRegionBlock(WORLD_COORD w)
 {
   return SIGMOD(w, BLOCKS_PER_REGION);
+}
+
+REGION_CHUNK_COORD World::coordWorldToRegionChunk(CHUNK_COORD w)
+{
+  return SIGMOD(w, CHUNK_SIZE);
 }

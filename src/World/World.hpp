@@ -29,4 +29,5 @@ public:
 
   // Coordinate system conversion
   static REGION_BLOCK_COORD coordWorldToRegionBlock(WORLD_COORD w);
+  static REGION_BLOCK_COORD coordWorldToRegionChunk(WORLD_COORD w);
 };
