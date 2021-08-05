@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #define MAX_BLOCK_ID 255
+#define WORLD_COORD int64_t
 
 class Block
 {

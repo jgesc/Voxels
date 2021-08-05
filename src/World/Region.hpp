@@ -2,12 +2,18 @@
 
 #include "Chunk.hpp"
 
+#include "../Utils/Utils.hpp"
+
 // Size in chunks
 #define REGION_SIZE 16
 // Size in blocks
 #define BLOCKS_PER_REGION (REGION_SIZE * CHUNK_SIZE)
 // Local chunk coordinates
-#define LOCAL_REGION_COORD uint_fast8_t
+#define REGION_CHUNK_COORD uint_fast8_t
+// Block inside the region
+// uint8_t With REGION_SIZE = 16 && CHUNK_SIZE = 16 => 256
+#define REGION_BLOCK_COORD uint_fast8_t
+static_assert(REGION_SIZE * CHUNK_SIZE <= 256);
 // Region coordinates
 #define REGION_COORD int64_t
 
@@ -22,13 +28,16 @@ public:
 
   // Chunk manipulation
   // TODO: distinguish between local chunk and block coordinates
-  Chunk * chunkWithBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
-  Chunk * getChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
-  void createEmptyChunk(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
+  Chunk * getChunkWithBlock(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
+  Chunk * getChunk(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
+  void createEmptyChunk(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
 
   // Block manipulation
-  Block * getBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z);
-  void setBlock(LOCAL_REGION_COORD x, LOCAL_REGION_COORD y, LOCAL_REGION_COORD z, uint32_t id);
+  Block * getBlock(REGION_BLOCK_COORD x, REGION_BLOCK_COORD y, REGION_BLOCK_COORD z);
+  void setBlock(REGION_BLOCK_COORD x, REGION_BLOCK_COORD y, REGION_BLOCK_COORD z, uint32_t id);
+
+  // Coordinate system conversion
+  static CHUNK_BLOCK_COORD coordRegionToChunkBlock(REGION_BLOCK_COORD w);
 
   // Region properties
   inline uint64_t getX(){return this->x;}
