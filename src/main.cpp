@@ -41,30 +41,12 @@ int main(void)
 
   GraphicsManager::initialize();
 
-  /// World generation
-
-  for(int x = 0; x < 4; x++)
-  {
-    for(int y = 0; y < 4; y++)
-    {
-      for(int z = 0; z < 4; z++)
-      {
-        world.fetchChunk(x, y, z);
-        RenderManager::registerChunk(world.getChunk(x, y, z));
-      }
-    }
-  }
-
-  world.setBlock(0, 0, 0, 1);
-  for(int i = 0; i < 64 * 64; i++)
-    world.setBlock(std::rand() % 64, std::rand() % 64, std::rand() % 64, 1 + std::rand() % 3);
-
   /// Camera setup
 
   float cameraSpeed = 0.01f;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
-  cam.setPos(glm::vec3(4, 2, 5));
+  cam.setPos(glm::vec3(17, 68, 17));
 
 
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -72,13 +54,38 @@ int main(void)
 
   /// Main loop
 
+  glm::vec3 lastChunk = glm::vec3(-1, -1, -1);
   while(!glfwWindowShouldClose(GraphicsManager::window))
   {
+    /// World generation
+
+    glm::vec3 camPos = cam.getPos();
+    camPos /= 16.0;
+    glm::vec3 currentChunk = (glm::vec<3, int64_t>)glm::floor(camPos);
+    if(currentChunk != lastChunk) {
+      lastChunk = currentChunk;
+      LOG("$ Entering Chunk " << lastChunk.x << " " << lastChunk.y << " " << lastChunk.z);
+      for(int x = lastChunk.x-1; x <= lastChunk.x+1; x++)
+      {
+        for(int y = lastChunk.y-1; y <= lastChunk.y+1; y++)
+        {
+          for(int z = lastChunk.z-1; z <= lastChunk.z+1; z++)
+          {
+            if(!world.getChunk(x, y, z))
+            {
+              world.fetchChunk(x, y, z);
+              RenderManager::registerChunk(world.getChunk(x, y, z));
+            }
+          }
+        }
+      }
+    }
+
     /// Controls
     glm::vec3 movementVector(0, 0, 0);
 
     GLFWwindow *window = GraphicsManager::window;
-    const float cameraSpeed = 0.1f; // adjust accordingly
+    const float cameraSpeed = 0.1f * (1 + (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)*5); // adjust accordingly
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
       movementVector += cameraSpeed * cam.getFront();
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -99,11 +106,16 @@ int main(void)
       5.0, &aimBlock);
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
-      aimBlock.getChunk()->setBlock(aimBlock.getX() % CHUNK_SIZE, aimBlock.getY() % CHUNK_SIZE, aimBlock.getZ() % CHUNK_SIZE, 0);
+      aimBlock.getChunk()->setBlock(
+        aimBlock.getX(),
+        aimBlock.getY(),
+        aimBlock.getZ(),
+        0);
+      LOG("Removing Block (" << aimBlock.getX() << ", " << aimBlock.getY() << ", " << aimBlock.getZ() << ")");
     }
 
-    /// Render
 
+    /// Render
     glClearColor(0.2, 0.6, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     RenderManager::renderChunksWithCamera(&cam); // TODO: use camera
