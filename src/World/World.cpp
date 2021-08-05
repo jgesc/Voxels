@@ -111,5 +111,10 @@ REGION_BLOCK_COORD World::coordWorldToRegionBlock(WORLD_COORD w)
 
 REGION_CHUNK_COORD World::coordWorldToRegionChunk(CHUNK_COORD w)
 {
+  return SIGMOD(w, REGION_SIZE);
+}
+
+REGION_CHUNK_COORD World::coordWorldToChunkBlock(CHUNK_COORD w)
+{
   return SIGMOD(w, CHUNK_SIZE);
 }

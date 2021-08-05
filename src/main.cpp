@@ -85,7 +85,7 @@ int main(void)
     glm::vec3 movementVector(0, 0, 0);
 
     GLFWwindow *window = GraphicsManager::window;
-    const float cameraSpeed = 0.1f; // adjust accordingly
+    const float cameraSpeed = 0.1f * (1 + (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)*5); // adjust accordingly
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
       movementVector += cameraSpeed * cam.getFront();
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -106,7 +106,12 @@ int main(void)
       5.0, &aimBlock);
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
-      aimBlock.getChunk()->setBlock(aimBlock.getX() % CHUNK_SIZE, aimBlock.getY() % CHUNK_SIZE, aimBlock.getZ() % CHUNK_SIZE, 0);
+      aimBlock.getChunk()->setBlock(
+        aimBlock.getX(),
+        aimBlock.getY(),
+        aimBlock.getZ(),
+        0);
+      LOG("Removing Block (" << aimBlock.getX() << ", " << aimBlock.getY() << ", " << aimBlock.getZ() << ")");
     }
 
 

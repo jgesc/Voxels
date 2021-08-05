@@ -26,6 +26,6 @@ void Chunk::setBlock(CHUNK_BLOCK_COORD x, CHUNK_BLOCK_COORD y, CHUNK_BLOCK_COORD
   }
   else
   {
-    LOG("WARING: Tried to set a chunk's block out of boundaries");
+    LOG("WARING: Tried to set a chunk's block out of boundaries (" << (int)x << ", " << (int)y << ", " << (int)z << ")");
   }
 }
