@@ -12,5 +12,6 @@ void TextureStore::initialize()
 }
 
 TextureStore::TextureStore() :
-  blockAtlas(Texture::fromResource("textures/blocks.png"))
+  blockAtlas(Texture::fromResource("textures/blocks.png")),
+  fontAtlas(Texture::fromResource("textures/font.png"))
 {}

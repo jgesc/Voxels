@@ -16,4 +16,5 @@ public:
 
   // Textures
   Texture blockAtlas;
+  Texture fontAtlas;
 };
