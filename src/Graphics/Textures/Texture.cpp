@@ -11,6 +11,7 @@ Texture Texture::fromResource(std::string path)
   glGenTextures(1, &id);
   // Bind loaded resource to texture
   glBindTexture(GL_TEXTURE_2D, id);
+  // TODO: allow multiple texture formats
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
   // Generate Mipmap
   glGenerateMipmap(GL_TEXTURE_2D);
