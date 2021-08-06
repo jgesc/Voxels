@@ -39,7 +39,7 @@ void ChunkRender::updateVBO()
   // Update buffer
   glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
   glBufferData(GL_ARRAY_BUFFER, vertex.size() * sizeof(float), vertex.data(), GL_STATIC_DRAW);
-  this->vertexCount = vertex.size() / 3;
+  this->vertexCount = vertex.size() / 5;
 
   // Unset requiresUpdate flag
   this->requiresUpdate = false;

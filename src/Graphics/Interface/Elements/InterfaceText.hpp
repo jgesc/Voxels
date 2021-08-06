@@ -15,5 +15,9 @@ private:
   Text text;
 public:
   InterfaceText(Text text);
+
+  void setText(std::string text);
+
+  void regenerateVBO();
   void render();
 };
