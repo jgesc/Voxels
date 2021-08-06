@@ -3,8 +3,8 @@
 std::vector<float> Text::generateVertexInfo(float size, float hoff, float voff)
 {
   // TODO: do not use screen size or font size constants
-  const uint16_t SCR_WIDTH = 800;
-  const uint16_t SCR_HEIGHT = 600;
+  const uint16_t SCR_WIDTH = GraphicsManager::getWindowWidth();
+  const uint16_t SCR_HEIGHT = GraphicsManager::getWindowHeight();
 
   const uint8_t CHAR_PIX_WIDTH = 4;
   const uint8_t CHAR_PIX_HEIGHT = 8;

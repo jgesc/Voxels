@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "GraphicsManager.hpp"
 
 class Text
 {
