@@ -12,7 +12,6 @@ Crosshair::Crosshair()
   glGenBuffers(1, &this->VBO);
   glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  unsigned int VAO;
   glGenVertexArrays(1, &(this->VAO));
   glBindVertexArray(this->VAO);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
