@@ -1,6 +1,6 @@
 #include "Text.hpp"
 
-std::vector<float> Text::generateVetexInfo(float size, float voff, float hoff)
+std::vector<float> Text::generateVertexInfo(float size, float hoff, float voff)
 {
   // TODO: do not use screen size or font size constants
   const uint16_t SCR_WIDTH = 800;
@@ -10,15 +10,15 @@ std::vector<float> Text::generateVetexInfo(float size, float voff, float hoff)
   const uint8_t CHAR_PIX_HEIGHT = 8;
 
   const uint8_t FONT_ATLAS_WIDTH = 16;
-  const uint8_t FONT_ATLAS_HEIGHT = 16;
+  const uint8_t FONT_ATLAS_HEIGHT = 8;
 
   // Character separation
   const float CHAR_SEP_H = 0.25;
   const float CHAR_SEP_V = 0.25;
 
   // Calculate texture character size
-  float ctWidth = 1 / FONT_ATLAS_WIDTH;
-  float ctHeight = 1 / FONT_ATLAS_HEIGHT;
+  float ctWidth = 1.0 / FONT_ATLAS_WIDTH;
+  float ctHeight = 1.0 / FONT_ATLAS_HEIGHT;
 
   // Calculate screen character size
   float csWidth = 2.0 / SCR_WIDTH * CHAR_PIX_WIDTH * size;
@@ -40,7 +40,7 @@ std::vector<float> Text::generateVetexInfo(float size, float voff, float hoff)
     if(*c == '\n')
     {
       x = hoff;
-      y += vSep;
+      y -= vSep + csHeight;
       continue;
     }
     else
@@ -50,16 +50,16 @@ std::vector<float> Text::generateVetexInfo(float size, float voff, float hoff)
       uint8_t fCol = *c % FONT_ATLAS_WIDTH;
       // Calculate vertex position in atlas texture
       float u = fCol * ctWidth;
-      float v = 1 - (fRow+1) * ctHeight;
+      float v = (fRow+1) * ctHeight;
 
       verts.insert(verts.end(), {
         /// TOP-LEFT TRIANGLE
         x, y, u, v, // Bot-Left
-        x, y+csHeight, u, v+ctHeight, // Top-Left
-        x+csWidth, y+csHeight, u+ctWidth, v+ctHeight, // Top-Right
+        x, y+csHeight, u, v-ctHeight, // Top-Left
+        x+csWidth, y+csHeight, u+ctWidth, v-ctHeight, // Top-Right
         /// BOT-RIGHT TRIANGLE
         x, y, u, v, // Bot-Left
-        x+csWidth, y+csHeight, u+ctWidth, v+ctHeight, // Top-Right
+        x+csWidth, y+csHeight, u+ctWidth, v-ctHeight, // Top-Right
         x+csWidth, y, u+ctWidth, v // Bot-Right
       });
       // Increase position pointer

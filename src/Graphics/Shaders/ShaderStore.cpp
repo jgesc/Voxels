@@ -30,4 +30,5 @@ ShaderStore::ShaderStore()
   this->defaultShader = makeShaderProgram("default.vs", "default.fs");
   this->chunkShader = makeShaderProgram("chunk.vs", "default.fs");
   this->userInterface = makeShaderProgram("ui.vs", "ui.fs");
+  this->textShader = makeShaderProgram("text.vs", "text.fs");
 }

@@ -6,6 +6,11 @@ Texture Texture::fromResource(std::string path)
   // Load resource
   unsigned char *data = stbi_load((RESOURCE_PATH + path).c_str(), &width,
     &height, &nchannels, 3);
+  if(!data)
+  {
+    LOG("ERROR loading resource: " + path);
+    throw -1;
+  }
   // Generate texture
   GLuint id;
   glGenTextures(1, &id);

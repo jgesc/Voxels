@@ -55,6 +55,7 @@ void ChunkRender::render()
   if(this->shouldUpdateVBO()) this->updateVBO();
 
   // Render
+  // TODO: move texture bind call to RenderManager
   TextureStore::getInstance()->blockAtlas.bind();
   glBindVertexArray(this->VAO);
   ShaderStore::I->chunkShader.use();

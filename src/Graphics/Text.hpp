@@ -10,5 +10,5 @@ public:
   Text(std::string content) : content(content) {};
 
   // Rendering utils
-  std::vector<float> generateVetexInfo(float size, float voff, float hoff);
+  std::vector<float> generateVertexInfo(float size, float voff, float hoff);
 };
