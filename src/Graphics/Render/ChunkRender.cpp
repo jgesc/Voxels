@@ -21,6 +21,7 @@ ChunkRender::ChunkRender(Chunk * chunk) : chunk(chunk)
 
 void ChunkRender::updateVBO()
 {
+  PROFILE_CPU(ChunkUpdateVBO);
   // Generate vertices
   vector<float> vertex;
 
@@ -48,6 +49,8 @@ void ChunkRender::updateVBO()
 
 void ChunkRender::render()
 {
+  PROFILE_CPU(ChunkRender);
+  PROFILE_GPU(ChunkRender);
   // Check if chunk has been updated
   this->requiresUpdate |= this->lastUpdate != this->chunk->getLastUpdate();
 

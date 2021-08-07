@@ -11,6 +11,7 @@ float intbound(float s, float ds) {
 void Raycast::intersectBlock(World * world, glm::vec3 from, glm::vec3 towards,
   float range, BlockCollision * out)
 {
+  PROFILE_CPU(RaycastIntersect);
   out->reset();
 
   // Cube containing origin point.

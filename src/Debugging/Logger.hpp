@@ -9,3 +9,6 @@
 using namespace std;
 
 #define LOG(msg) cout << msg << endl;
+
+#define PROFILE_CPU(name) rmt_ScopedCPUSample(name, 1)
+#define PROFILE_GPU(name) rmt_ScopedOpenGLSample(name)

@@ -41,6 +41,7 @@ int main(void)
   glm::vec3 lastChunk = glm::vec3(-1, -1, -1);
   while(!glfwWindowShouldClose(GraphicsManager::window))
   {
+    PROFILE_CPU(MainLoop);
     /// World generation
 
     glm::vec3 currentChunk = ply.getChunk();
@@ -84,6 +85,9 @@ int main(void)
     /// Render
     RenderManager::renderAll();
     glfwPollEvents();
+
+    if (glfwGetKey(GraphicsManager::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+      glfwSetWindowShouldClose(GraphicsManager::window, true);
   }
 
   /// Cleanup

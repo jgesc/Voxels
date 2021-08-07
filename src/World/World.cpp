@@ -35,6 +35,7 @@ Region * World::getRegionWithChunk(CHUNK_COORD x, CHUNK_COORD y, CHUNK_COORD z)
 
 Block * World::getBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z)
 {
+  PROFILE_CPU(WorldGetBlock);
   Region * region = this->getRegionWithBlock(x, y, z);
   if(region)
   {
@@ -50,6 +51,7 @@ Block * World::getBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z)
 
 void World::setBlock(WORLD_COORD x, WORLD_COORD y, WORLD_COORD z, uint32_t id)
 {
+  PROFILE_CPU(WorldSetBlock);
   //LOG("World::setBlock(" << x << ", " << y << ", " << z << ")");
   Region * region = this->getRegionWithBlock(x, y, z);
   if(region)

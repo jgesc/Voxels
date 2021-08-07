@@ -46,6 +46,9 @@ void RenderManager::renderInterface()
 
 void RenderManager::renderAll()
 {
+  PROFILE_CPU(RenderAll);
+  PROFILE_GPU(RenderAll);
+
   glClearColor(0.2, 0.6, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   RenderManager::renderChunksWithCamera(Camera::getInstance()); // TODO: use camera
