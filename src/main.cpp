@@ -32,7 +32,7 @@ int main(void)
 
   // Manage input
   Input::registerInputCallbacks();
-
+  
   /// Main loop
 
   glm::vec3 lastChunk = glm::vec3(-1, -1, -1);

@@ -27,8 +27,7 @@ public:
     chunks{} {};
 
   // Chunk manipulation
-  // TODO: distinguish between local chunk and block coordinates
-  Chunk * getChunkWithBlock(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
+  Chunk * getChunkWithBlock(REGION_BLOCK_COORD x, REGION_BLOCK_COORD y, REGION_BLOCK_COORD z);
   Chunk * getChunk(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
   void createEmptyChunk(REGION_CHUNK_COORD x, REGION_CHUNK_COORD y, REGION_CHUNK_COORD z);
 

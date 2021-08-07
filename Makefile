@@ -4,11 +4,11 @@ SRC_FILES := $(shell find $(SRC_DIR) -name *.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 OBJ_DIRS := $(dir $(OBJ_FILES))
 DUMMY:=$(shell mkdir --parents $(OBJ_DIRS))
-INCLUDES := -lglfw -ldl
+INCLUDES := -lglfw -ldl -lunwind -lbfd
 
 
 main: $(OBJ_FILES)
-	g++ -O3 -std=c++17 -o bin/main $^ $(INCLUDES)
+	g++ -O3 -g3 -std=c++17 -o bin/main $^ $(INCLUDES)
 
 resources:
 	rm -rf bin/Resources
@@ -26,6 +26,6 @@ all:
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	g++ -O3 -include "src/Debugging/Logger.hpp" -std=c++17 -c -o $@ -MMD $<
+	g++ -O3 -g3 -include "src/Debugging/Logger.hpp" -std=c++17 -c -o $@ -MMD $<
 
 -include $(shell find $(OBJ_DIR) -name *.d)
