@@ -4,7 +4,9 @@ SRC_FILES := $(shell find $(SRC_DIR) -name *.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 OBJ_DIRS := $(dir $(OBJ_FILES))
 DUMMY:=$(shell mkdir --parents $(OBJ_DIRS))
-INCLUDES := -lglfw -ldl -lunwind -lbfd
+# -pthread, -lunwind and -lbfb are used only for debugging purposes
+# TODO: differentiate debugging and release includes
+INCLUDES := -pthread -lglfw -ldl -lunwind -lbfd
 
 
 main: $(OBJ_FILES)

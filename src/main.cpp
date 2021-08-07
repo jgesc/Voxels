@@ -2,7 +2,6 @@
 #include "Graphics/Render/ChunkRender.hpp"
 #include "Graphics/RenderManager.hpp"
 #include "World/Chunk.hpp"
-#include "Debugging/Logger.hpp"
 #include "Graphics/Camera.hpp"
 #include "World/Physics/Collision/Raycast.hpp"
 #include "World/Physics/Collision/BlockCollision.hpp"
@@ -22,9 +21,13 @@ static Camera cam;
 
 int main(void)
 {
+  Remotery* rmt;
+  rmt_CreateGlobalInstance(&rmt);
+
   /// Initialization
 
   GraphicsManager::initialize();
+  rmt_BindOpenGL();
 
   /// Player setup
   PlayerController ply;
@@ -32,7 +35,7 @@ int main(void)
 
   // Manage input
   Input::registerInputCallbacks();
-  
+
   /// Main loop
 
   glm::vec3 lastChunk = glm::vec3(-1, -1, -1);
@@ -85,6 +88,8 @@ int main(void)
 
   /// Cleanup
 
+  rmt_DestroyGlobalInstance(rmt);
+  rmt_UnbindOpenGL();
   GraphicsManager::terminate();
   return 0;
 }
