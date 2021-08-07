@@ -19,7 +19,9 @@ void PlayerController::traslate(glm::vec3 dPos)
 void PlayerController::update()
 {
   // Read movement input
-  glm::vec3 inputVector = Input::getMovementInputVector();
+  glm::vec3 inputVector = glm::normalize(Input::getMovementInputVector());
+  if(glm::any(glm::isnan(inputVector))) inputVector = glm::vec3(0, 0, 0);
+  inputVector *= Input::getSprint() ? 0.5 : 0.1;
 
   // Traslate
   this->traslate(inputVector);

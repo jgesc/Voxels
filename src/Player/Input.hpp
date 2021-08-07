@@ -8,9 +8,10 @@ class Input
 {
 private:
   static glm::vec3 movementVector;
-  static void callback(GLFWwindow * window, int key, int scancode, int action, int mods);
+  static bool sprint;
 public:
   static void registerInputCallbacks();
   static void inputLoop(); // TODO: substitute with callbacks
-  static glm::vec3 getMovementInputVector() {return movementVector;};
+  static glm::vec3 getMovementInputVector() {return movementVector;}
+  static bool getSprint() {return sprint;}
 };

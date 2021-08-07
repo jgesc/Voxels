@@ -1,13 +1,13 @@
 #include "Input.hpp"
 
 glm::vec3 Input::movementVector = glm::vec3(0.0, 0.0, 0.0);
-
-void Input::callback(GLFWwindow * window, int key, int scancode, int action, int mods)
+bool Input::sprint = false;
+/*
+void Input::keyboard_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
   LOG("Key Event " << key << " code " << scancode << " action " << action << " mods " << mods);
-}
+}*/
 
-// TODO: make class method
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
   static double lastx = 0;
@@ -29,7 +29,7 @@ void Input::registerInputCallbacks()
 {
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO: move
   glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
-  glfwSetKeyCallback(GraphicsManager::window, Input::callback); // TODO: set real keyboard callback
+  //glfwSetKeyCallback(GraphicsManager::window, Input::keyboard_callback);
 }
 
 void Input::inputLoop() // TODO: remove and relocate functionality
@@ -39,19 +39,18 @@ void Input::inputLoop() // TODO: remove and relocate functionality
   GLFWwindow *window = GraphicsManager::window;
   Camera * cam = Camera::getInstance();
 
-  const float cameraSpeed = 0.1f * (1 + (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)*5); // adjust accordingly
+  sprint = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS;
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    movementVector += cameraSpeed * cam->getFront();
+    movementVector += cam->getFront();
   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    movementVector -= cameraSpeed * cam->getFront();
+    movementVector -= cam->getFront();
   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    movementVector -= glm::normalize(glm::cross(cam->getFront(), glm::vec3(0, 1, 0))) * cameraSpeed;
+    movementVector -= glm::cross(cam->getFront(), glm::vec3(0, 1, 0));
   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    movementVector += glm::normalize(glm::cross(cam->getFront(), glm::vec3(0, 1, 0))) * cameraSpeed;
+    movementVector += glm::cross(cam->getFront(), glm::vec3(0, 1, 0));
   if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-    movementVector -= glm::vec3(0, 1, 0) * cameraSpeed;
+    movementVector -= glm::vec3(0, 1, 0);
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-    movementVector += glm::vec3(0, 1, 0) * cameraSpeed;
-  movementVector = glm::normalize(movementVector) * cameraSpeed;
+    movementVector += glm::vec3(0, 1, 0);
   if(glm::any(glm::isnan(movementVector))) movementVector = glm::vec3(0, 0, 0);
 }
