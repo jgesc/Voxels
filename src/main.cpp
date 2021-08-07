@@ -6,6 +6,8 @@
 #include "Graphics/Camera.hpp"
 #include "World/Physics/Collision/Raycast.hpp"
 #include "World/Physics/Collision/BlockCollision.hpp"
+#include "Player/Input.hpp"
+#include "Player/PlayerController.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -43,14 +45,16 @@ int main(void)
 
   /// Camera setup
 
+  // Create camera
   float cameraSpeed = 0.01f;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
   cam.setPos(glm::vec3(17, 68, 17));
 
-
+  // Manage input
   glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
+  glfwSetKeyCallback(GraphicsManager::window, Input::callback);
 
   /// Main loop
 
@@ -116,12 +120,7 @@ int main(void)
 
 
     /// Render
-    glClearColor(0.2, 0.6, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderManager::renderChunksWithCamera(&cam); // TODO: use camera
-    RenderManager::renderInterface();
-
-    glfwSwapBuffers(GraphicsManager::window);
+    RenderManager::renderAll();
     glfwPollEvents();
   }
 
