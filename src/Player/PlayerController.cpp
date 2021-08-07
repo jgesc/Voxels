@@ -10,3 +10,15 @@ PlayerController::PlayerController()
 {
   PlayerController::instance = this;
 }
+
+void PlayerController::update()
+{
+  // Read movement input
+  glm::vec3 inputVector = Input::getMovementInputVector();
+
+  // Traslate
+  this->position += inputVector;
+
+  // Move camera
+  Camera::getInstance()->setPos(this->position + getCamOffset());
+}

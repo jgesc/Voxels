@@ -12,7 +12,7 @@ void InterfaceRender::renderInterface()
 
   if(!InterfaceRender::text)
   {
-    InterfaceRender::text = new InterfaceText(Text("This is a test text"));
+    InterfaceRender::text = new InterfaceText(Text(""));
   }
   char dbgstr[1024];
   PlayerController * ply = PlayerController::getInstance();

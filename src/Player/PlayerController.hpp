@@ -16,6 +16,8 @@ public:
   static const glm::vec3 DEFAULT_PLAYER_GRAVITY;
   static const glm::vec3 DEFAULT_PLAYER_CAMERA_OFFSET;
 
+  void update();
+
   // Setters
   void setPos(glm::vec3 pos) {this->position = pos;}
 

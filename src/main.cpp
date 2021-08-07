@@ -33,7 +33,7 @@ int main(void)
   float cameraSpeed = 0.01f;
   cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
     (float)800 / (float)600, 0.1f, 100.0f));
-  cam.setPos(glm::vec3(17, 68, 17));
+  ply.setPos(glm::vec3(17, 68, 17));
 
   // Manage input
   Input::registerInputCallbacks();
@@ -45,9 +45,7 @@ int main(void)
   {
     /// World generation
 
-    glm::vec3 camPos = cam.getPos();
-    camPos /= 16.0;
-    glm::vec3 currentChunk = (glm::vec<3, int64_t>)glm::floor(camPos);
+    glm::vec3 currentChunk = ply.getChunk();
     if(currentChunk != lastChunk) {
       lastChunk = currentChunk;
       LOG("$ Entering Chunk " << lastChunk.x << " " << lastChunk.y << " " << lastChunk.z);
@@ -69,9 +67,7 @@ int main(void)
 
     /// Controls
     Input::inputLoop();
-
-    cam.traslate(Input::getMovementInputVector());
-    ply.setPos(cam.getPos());
+    ply.update();
 
     // TODO: move
     Raycast::intersectBlock(&world, cam.getPos(), cam.getFront(),

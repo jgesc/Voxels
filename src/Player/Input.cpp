@@ -53,4 +53,5 @@ void Input::inputLoop() // TODO: remove and relocate functionality
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     movementVector += glm::vec3(0, 1, 0) * cameraSpeed;
   movementVector = glm::normalize(movementVector) * cameraSpeed;
+  if(glm::any(glm::isnan(movementVector))) movementVector = glm::vec3(0, 0, 0);
 }
