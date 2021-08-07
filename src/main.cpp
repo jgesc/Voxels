@@ -21,13 +21,16 @@ static Camera cam;
 
 int main(void)
 {
-  Remotery* rmt;
-  rmt_CreateGlobalInstance(&rmt);
 
   /// Initialization
 
   GraphicsManager::initialize();
+
+#ifdef ENABLE_PROFILER
+  Remotery* rmt;
+  rmt_CreateGlobalInstance(&rmt);
   rmt_BindOpenGL();
+#endif
 
   /// Player setup
   PlayerController ply;
@@ -92,8 +95,11 @@ int main(void)
 
   /// Cleanup
 
+#ifdef ENABLE_PROFILER
   rmt_DestroyGlobalInstance(rmt);
   rmt_UnbindOpenGL();
+#endif
+
   GraphicsManager::terminate();
   return 0;
 }
