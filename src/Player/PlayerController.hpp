@@ -17,6 +17,7 @@ public:
   static const glm::vec3 DEFAULT_PLAYER_CAMERA_OFFSET;
 
   void update();
+  void traslate(glm::vec3 dPos);
 
   // Setters
   void setPos(glm::vec3 pos) {this->position = pos;}

@@ -26,13 +26,8 @@ int main(void)
 
   GraphicsManager::initialize();
 
-  /// Camera setup
+  /// Player setup
   PlayerController ply;
-
-  // Create camera
-  float cameraSpeed = 0.01f;
-  cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
-    (float)800 / (float)600, 0.1f, 100.0f));
   ply.setPos(glm::vec3(17, 68, 17));
 
   // Manage input

@@ -8,6 +8,8 @@ Camera::Camera()
   this->front = glm::vec3(0, 0, -1);
   this->yaw = -90.0f;
   this->pitch = 0.0f;
+
+  this->setProjectionPerspective(85.0, 0.1f, 100.0f);
 }
 
 void Camera::updateViewMatrix()
@@ -47,4 +49,23 @@ void Camera::traslate(glm::vec3 deltaPos)
 {
   if(glm::any(glm::isnan(deltaPos))) return;
   pos += deltaPos; this->updateViewMatrix();
+}
+
+void Camera::setProjectionPerspective(float fov, float near, float far)
+{
+  this->fov = fov;
+  this->near = near;
+  this->far = far;
+  this->recalculateProjectionPerspective();
+}
+
+void Camera::recalculateRatio()
+{
+  this->ratio = GraphicsManager::getWindowWidth() / GraphicsManager::getWindowHeight();
+}
+
+void Camera::recalculateProjectionPerspective()
+{
+  this->recalculateRatio();
+  this->setProjectionMatrix(glm::perspective(glm::radians(fov), ratio, near, far));
 }
