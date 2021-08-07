@@ -2,6 +2,7 @@
 
 #include "Elements/Crosshair.hpp"
 #include "Elements/InterfaceText.hpp"
+#include "../../Player/PlayerController.hpp"
 
 class InterfaceRender
 {
