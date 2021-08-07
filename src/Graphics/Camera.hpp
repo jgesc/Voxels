@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "GraphicsManager.hpp"
+
 #define MAX_PITCH 85.0f
 #define MIN_PITCH -85.0f
 
@@ -17,6 +19,10 @@ private:
   float pitch, yaw;
 
   glm::mat4 view;
+
+  float fov;
+  float near, far;
+  float ratio;
 public:
   // Constructor
   Camera();
@@ -42,8 +48,16 @@ public:
   void setProjectionMatrix(glm::mat4 newProj) {this->projection = newProj;
     this->updateViewMatrix();}
   glm::mat4 getProjectionMatrix() {return this->projection;}
+  void setProjectionPerspective(float fov, float near, float far);
 
   // View
   void updateViewMatrix();
   glm::mat4 getViewMatrix() {return this->view;}
+
+  // High level
+  void setFOV(float fov) {this->setProjectionPerspective(fov, near, far);}
+  void setNear(float near) {this->setProjectionPerspective(fov, near, far);}
+  void setFar(float far) {this->setProjectionPerspective(fov, near, far);}
+  void recalculateRatio();
+  void recalculateProjectionPerspective();
 };

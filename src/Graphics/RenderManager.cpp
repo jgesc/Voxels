@@ -14,6 +14,12 @@ void RenderManager::registerChunk(Chunk * chunk)
 
 void RenderManager::renderChunksWithCamera(Camera * camera)
 {
+  if(camera == NULL)
+  {
+    LOG("WARNING: attempting to render chunks with NULL camera");
+    throw -1;
+  }
+
   // Set chunk shader
   ShaderStore::I->chunkShader.use();
   // Get camera view matrix
@@ -36,4 +42,14 @@ void RenderManager::renderChunksWithCamera(Camera * camera)
 void RenderManager::renderInterface()
 {
   InterfaceRender::renderInterface();
+}
+
+void RenderManager::renderAll()
+{
+  glClearColor(0.2, 0.6, 1.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  RenderManager::renderChunksWithCamera(Camera::getInstance()); // TODO: use camera
+  RenderManager::renderInterface();
+
+  glfwSwapBuffers(GraphicsManager::window);
 }

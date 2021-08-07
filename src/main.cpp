@@ -6,6 +6,8 @@
 #include "Graphics/Camera.hpp"
 #include "World/Physics/Collision/Raycast.hpp"
 #include "World/Physics/Collision/BlockCollision.hpp"
+#include "Player/Input.hpp"
+#include "Player/PlayerController.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,23 +19,6 @@ static BlockCollision aimBlock;
 static World world;
 static Camera cam;
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-  static double lastx = 0;
-  static double lasty = 0;
-
-  float xoffset = xpos - lastx;
-  float yoffset = lasty - ypos;
-  lastx = xpos;
-  lasty = ypos;
-
-  float sensitivity = 0.1f;
-  xoffset *= sensitivity;
-  yoffset *= sensitivity;
-
-  Camera::getInstance()->modifyPitchYaw(yoffset, xoffset);
-}
-
 
 int main(void)
 {
@@ -41,16 +26,12 @@ int main(void)
 
   GraphicsManager::initialize();
 
-  /// Camera setup
+  /// Player setup
+  PlayerController ply;
+  ply.setPos(glm::vec3(17, 68, 17));
 
-  float cameraSpeed = 0.01f;
-  cam.setProjectionMatrix(glm::perspective(glm::radians((float)85.0),
-    (float)800 / (float)600, 0.1f, 100.0f));
-  cam.setPos(glm::vec3(17, 68, 17));
-
-
-  glfwSetInputMode(GraphicsManager::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  glfwSetCursorPosCallback(GraphicsManager::window, mouse_callback);
+  // Manage input
+  Input::registerInputCallbacks();
 
   /// Main loop
 
@@ -59,9 +40,7 @@ int main(void)
   {
     /// World generation
 
-    glm::vec3 camPos = cam.getPos();
-    camPos /= 16.0;
-    glm::vec3 currentChunk = (glm::vec<3, int64_t>)glm::floor(camPos);
+    glm::vec3 currentChunk = ply.getChunk();
     if(currentChunk != lastChunk) {
       lastChunk = currentChunk;
       LOG("$ Entering Chunk " << lastChunk.x << " " << lastChunk.y << " " << lastChunk.z);
@@ -82,29 +61,13 @@ int main(void)
     }
 
     /// Controls
-    glm::vec3 movementVector(0, 0, 0);
+    Input::inputLoop();
+    ply.update();
 
-    GLFWwindow *window = GraphicsManager::window;
-    const float cameraSpeed = 0.1f * (1 + (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)*5); // adjust accordingly
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-      movementVector += cameraSpeed * cam.getFront();
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-      movementVector -= cameraSpeed * cam.getFront();
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-      movementVector -= glm::normalize(glm::cross(cam.getFront(), glm::vec3(0, 1, 0))) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-      movementVector += glm::normalize(glm::cross(cam.getFront(), glm::vec3(0, 1, 0))) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-      movementVector -= glm::vec3(0, 1, 0) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-      movementVector += glm::vec3(0, 1, 0) * cameraSpeed;
-    movementVector = glm::normalize(movementVector) * cameraSpeed;
-
-    cam.traslate(movementVector);
-
+    // TODO: move
     Raycast::intersectBlock(&world, cam.getPos(), cam.getFront(),
       5.0, &aimBlock);
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
+    if(glfwGetMouseButton(GraphicsManager::window, GLFW_MOUSE_BUTTON_LEFT) && aimBlock.getIsSet())
     {
       aimBlock.getChunk()->setBlock(
         aimBlock.getX(),
@@ -116,12 +79,7 @@ int main(void)
 
 
     /// Render
-    glClearColor(0.2, 0.6, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderManager::renderChunksWithCamera(&cam); // TODO: use camera
-    RenderManager::renderInterface();
-
-    glfwSwapBuffers(GraphicsManager::window);
+    RenderManager::renderAll();
     glfwPollEvents();
   }
 

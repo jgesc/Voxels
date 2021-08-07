@@ -29,6 +29,7 @@ public:
   // Rendering utils
   static void renderChunksWithCamera(Camera * camera);
   static void renderInterface();
+  static void renderAll();
 
   static float getFPS() {return 1 / RenderManager::renderTime;}
 };
